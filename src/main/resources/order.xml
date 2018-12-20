@@ -1,73 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans  xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:aop="http://www.springframework.org/schema/aop"
-        xsi:schemaLocation="
-           http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-3.0.xsd
-           http://www.springframework.org/schema/aop
-           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-           
-    
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
     <aop:aspectj-autoproxy/>
-           
-     <bean id="pointcutService" class="com.sufanx.service.impl.PointcutService"/>
 
-   <bean id="aspect1" class="com.sufanx.aop.OrderAspect1"/>
-   <bean id="aspect2" class="com.sufanx.aop.OrderAspect2"/>
+    <!--Target Object-->
+    <bean id="loginService" class="com.sufanx.service.LoginService"/>
 
-    
+    <bean id="firstAspect" class="com.sufanx.order.OrderAspectFirst"/>
+    <bean id="secondAspect" class="com.sufanx.order.OrderAspectSecond"/>
+
     <aop:config>
-        <aop:pointcut expression="execution(* *())" id="pointcut"/>
-        
-        <aop:aspect ref="aspect1" order="1">
-         
-             <aop:before pointcut-ref="pointcut" 
-                         method="beforeAdvice1" />
-             <aop:before pointcut-ref="pointcut" 
-                         method="beforeAdvice2" />
-             
-                        
-             <aop:after-returning pointcut-ref="pointcut" 
-                                  method="afterReturningAdvice1" 
-                                  arg-names="retVal"
-                                  returning="retVal"/>
-                          
-             <aop:after-returning pointcut-ref="pointcut" 
-                                  method="afterReturningAdvice2" 
-                                  arg-names="retVal"
-                                  returning="retVal"/>
-                                                                   
-             <aop:after-throwing  pointcut-ref="pointcut" 
-                                  method="afterThrowingAdvice1" 
-                                  arg-names="exception"
-                                  throwing="exception"/>
+        <aop:pointcut expression="execution(* *(..))" id="pointcut"/>
 
-             
-             <aop:after-throwing  pointcut-ref="pointcut" 
-                                  method="afterThrowingAdvice2" 
-                                  arg-names="exception"
-                                  throwing="exception"/>
-             
-             <aop:after pointcut-ref="pointcut" 
-                        method="afterFinallyAdvice1"/>
-           
+        <aop:aspect ref="firstAspect" order="1">
 
-             <aop:after pointcut-ref="pointcut" 
-                        method="afterFinallyAdvice2"/>                     
+            <aop:before pointcut-ref="pointcut"
+                        method="beforeAdviceFirst"/>
+            <aop:before pointcut-ref="pointcut"
+                        method="beforeAdviceSecond"/>
 
-             <aop:around pointcut-ref="pointcut" 
-                         method="aroundAdvice1"/>
+            <aop:after-returning pointcut-ref="pointcut"
+                                 method="afterReturningAdviceFirst"
+                                 arg-names="retVal"
+                                 returning="retVal"/>
+            <aop:after-returning pointcut-ref="pointcut"
+                                 method="afterReturningAdviceSecond"
+                                 arg-names="retVal"
+                                 returning="retVal"/>
 
-             <aop:around pointcut-ref="pointcut" 
-                         method="aroundAdvice2"/>
-                         
+            <aop:after-throwing pointcut-ref="pointcut"
+                                method="afterThrowingAdviceFirst"
+                                arg-names="exception"
+                                throwing="exception"/>
+            <aop:after-throwing pointcut-ref="pointcut"
+                                method="afterThrowingAdviceSecond"
+                                arg-names="exception"
+                                throwing="exception"/>
+
+            <aop:after pointcut-ref="pointcut"
+                       method="afterFinallyAdviceFirst"/>
+            <aop:after pointcut-ref="pointcut"
+                       method="afterFinallyAdviceSecond"/>
+
+            <aop:around pointcut-ref="pointcut"
+                        method="aroundAdviceFirst"/>
+            <aop:around pointcut-ref="pointcut"
+                        method="aroundAdviceSecond"/>
+
         </aop:aspect>
     </aop:config>
 
-        
-   
 </beans>
